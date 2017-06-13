@@ -19,7 +19,7 @@ public class SQLiteTrespasses implements Trespasses {
 
     @Override
     public Iterable<Trespass> iterate() {
-        this.db = new TrespassesSQLiteDBHelper(context).getReadableDatabase();
+        this.db = new QuitSqliteDBHelper(context).getReadableDatabase();
         String[] projection = {"ID"};
 
         List<Trespass> trespasses = new ArrayList<>();
@@ -37,12 +37,9 @@ public class SQLiteTrespasses implements Trespasses {
 
     @Override
     public Trespass add(Date date) {
-        SQLiteDatabase db = new TrespassesSQLiteDBHelper(context).getWritableDatabase();
+        SQLiteDatabase db = new QuitSqliteDBHelper(context).getWritableDatabase();
         ContentValues values = new ContentValues();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String dateStr = sdf.format(date);
-        values.put("COMMIT_DATE", dateStr);
         long newRowId = db.insert("TRESPASSES", null, values);
-        return new SQLiteTrespass(new TrespassesSQLiteDBHelper(context).getReadableDatabase(), newRowId);
+        return new SQLiteTrespass(new QuitSqliteDBHelper(context).getReadableDatabase(), newRowId);
     }
 }

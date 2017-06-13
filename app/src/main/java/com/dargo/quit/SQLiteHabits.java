@@ -17,7 +17,7 @@ public class SQLiteHabits implements Habits {
 
   @Override
   public Iterable<Habit> iterate() {
-    this.db = new HabitsSqliteDBHelper(context).getReadableDatabase();
+    this.db = new QuitSqliteDBHelper(context).getReadableDatabase();
     String[] projection = {"ID"};
 
     List<Habit> habits= new ArrayList<>();
@@ -35,10 +35,10 @@ public class SQLiteHabits implements Habits {
 
   @Override
   public Habit add(String name) {
-    SQLiteDatabase db = new HabitsSqliteDBHelper(context).getWritableDatabase();
+    SQLiteDatabase db = new QuitSqliteDBHelper(context).getWritableDatabase();
     ContentValues values = new ContentValues();
     values.put("NAME", name);
     long newRowId = db.insert("HABITS", null, values);
-    return new SQLiteHabit(new HabitsSqliteDBHelper(context).getReadableDatabase(), newRowId);
+    return new SQLiteHabit(new QuitSqliteDBHelper(context).getReadableDatabase(), newRowId);
   }
 }

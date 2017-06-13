@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
   @Override
@@ -20,13 +22,25 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    FloatingActionButton addNewHabitButton = (FloatingActionButton) findViewById(R.id.fab);
+    FloatingActionButton addNewHabitButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
     addNewHabitButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
         Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show();
         new AddHabitDialogFragment().show(getFragmentManager(), "AddHabitDialogFragment");
+      }
+    });
+
+    FloatingActionButton addNewTrespassButton = (FloatingActionButton) findViewById(R.id.addTrespassButton);
+    addNewTrespassButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+          Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+          Trespass trespass = new SQLiteTrespasses(getBaseContext()).add(new Date());
+          Toast.makeText(getBaseContext(), "New trespass at " + trespass.getDate(), Toast.LENGTH_LONG).show();
+
       }
     });
   }
