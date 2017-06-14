@@ -5,9 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class SQLiteTrespasses implements Trespasses {
@@ -36,9 +34,11 @@ public class SQLiteTrespasses implements Trespasses {
     }
 
     @Override
-    public Trespass add(Date date) {
+    public Trespass add(Habit habit) {
         SQLiteDatabase db = new QuitSqliteDBHelper(context).getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("habit_ID", habit.getId());
+        values.put("COMMIT_DATE", System.currentTimeMillis());
         long newRowId = db.insert("TRESPASSES", null, values);
         return new SQLiteTrespass(new QuitSqliteDBHelper(context).getReadableDatabase(), newRowId);
     }

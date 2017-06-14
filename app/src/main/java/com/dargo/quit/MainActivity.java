@@ -2,15 +2,17 @@ package com.dargo.quit;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,8 +28,6 @@ public class MainActivity extends AppCompatActivity {
     addNewHabitButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
         new AddHabitDialogFragment().show(getFragmentManager(), "AddHabitDialogFragment");
       }
     });
@@ -36,13 +36,26 @@ public class MainActivity extends AppCompatActivity {
     addNewTrespassButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-          Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-          Trespass trespass = new SQLiteTrespasses(getBaseContext()).add(new Date());
-          Toast.makeText(getBaseContext(), "New trespass at " + trespass.getDate(), Toast.LENGTH_LONG).show();
-
+        Habit habit = null;
+        for (Habit aHabit : new SQLiteHabits(getBaseContext()).iterate()) {
+          habit = aHabit;
+          break;
+        }
+        new SQLiteTrespasses(getBaseContext()).add(habit);
+        populateListView();
       }
     });
+
+    populateListView();
+  }
+
+  private void populateListView() {
+    final ListView listview = (ListView) findViewById(R.id.listview);
+    List<String> values = new ArrayList<>();
+    for (Trespass trespass : new SQLiteTrespasses(getBaseContext()).iterate()) {
+      values.add(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(trespass.getDate()));
+    }
+    listview.setAdapter(new TrespassListAdapter(this, values));
   }
 
   private void showAllHabits() {

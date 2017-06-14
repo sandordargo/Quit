@@ -25,12 +25,11 @@ public class SQLiteTrespass implements Trespass {
         String selection = "ID = ?";
         String[] selectionArgs = { String.valueOf(this.id) };
         Date date = new Date();
-
         Cursor cursor = db.query("TRESPASSES", projection, selection,
                 selectionArgs, null, null, null);
         if(cursor.getCount() > 0) {
             cursor.moveToFirst();
-            date = new Date(cursor.getColumnIndex("COMMIT_DATE")*1000);
+            date = new Date(cursor.getLong(cursor.getColumnIndex("COMMIT_DATE")));
         }
         cursor.close();
 

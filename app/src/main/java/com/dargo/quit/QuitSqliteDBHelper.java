@@ -9,16 +9,16 @@ public class QuitSqliteDBHelper extends SQLiteOpenHelper {
       "CREATE TABLE HABITS (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
           "NAME TEXT)";
   private static final String SQL_CREATE_TRESPASSES =
-          "CREATE TABLE TRESPASSES (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                  "COMMIT_DATE DATETIME DEFAULT CURRENT_TIMESTAMP)";
+      "CREATE TABLE TRESPASSES (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+          "HABIT_ID INTEGER, COMMIT_DATE INTEGER)";
 
   private static final String SQL_DELETE_HABITS =
       "DROP TABLE IF EXISTS HABITS";
 
   private static final String SQL_DELETE_TRESPASSES =
-          "DROP TABLE IF EXISTS TRESPASSES";
+      "DROP TABLE IF EXISTS TRESPASSES";
 
-  public static final int DATABASE_VERSION = 3;
+  public static final int DATABASE_VERSION = 1;
   public static final String DATABASE_NAME = "Habits.db";
 
   public QuitSqliteDBHelper(Context context) {
