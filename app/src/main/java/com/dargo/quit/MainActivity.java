@@ -10,11 +10,13 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TrespassListAdapterCallback {
+
+  ListView listView;
+  TrespassListAdapter trespassListAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +47,18 @@ public class MainActivity extends AppCompatActivity {
         populateListView();
       }
     });
-
     populateListView();
   }
 
-  private void populateListView() {
-    final ListView listview = (ListView) findViewById(R.id.listview);
-    List<String> values = new ArrayList<>();
+  public void populateListView() {
+    listView = (ListView) findViewById(R.id.listview);
+    List<Trespass> values = new ArrayList<>();
     for (Trespass trespass : new SQLiteTrespasses(getBaseContext()).iterate()) {
-      values.add(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(trespass.getDate()));
+      values.add(trespass);
     }
-    listview.setAdapter(new TrespassListAdapter(this, values));
+    trespassListAdapter = new TrespassListAdapter(this, values);
+    trespassListAdapter.setCallback(this);
+    listView.setAdapter(trespassListAdapter);
   }
 
   private void showAllHabits() {

@@ -3,6 +3,7 @@ package com.dargo.quit;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SQLiteTrespass implements Trespass {
@@ -34,6 +35,11 @@ public class SQLiteTrespass implements Trespass {
         cursor.close();
 
         return date;
+    }
+
+    @Override
+    public String getFormattedDate() {
+        return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(getDate());
     }
 
 }

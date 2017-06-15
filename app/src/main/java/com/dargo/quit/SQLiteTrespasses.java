@@ -42,4 +42,10 @@ public class SQLiteTrespasses implements Trespasses {
         long newRowId = db.insert("TRESPASSES", null, values);
         return new SQLiteTrespass(new QuitSqliteDBHelper(context).getReadableDatabase(), newRowId);
     }
+
+    @Override
+    public boolean delete(Trespass trespass) {
+        SQLiteDatabase db = new QuitSqliteDBHelper(context).getWritableDatabase();
+        return db.delete("TRESPASSES", "ID=" + trespass.getId(), null) > 0;
+    }
 }
