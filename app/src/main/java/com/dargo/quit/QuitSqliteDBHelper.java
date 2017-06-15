@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class QuitSqliteDBHelper extends SQLiteOpenHelper {
   private static final String SQL_CREATE_HABITS =
       "CREATE TABLE HABITS (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-          "NAME TEXT)";
+          "NAME TEXT, ISDEFAULT INTEGER DEFAULT 0)";
   private static final String SQL_CREATE_TRESPASSES =
       "CREATE TABLE TRESPASSES (ID INTEGER PRIMARY KEY AUTOINCREMENT," +
           "HABIT_ID INTEGER, COMMIT_DATE INTEGER)";

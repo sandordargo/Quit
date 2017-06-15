@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,11 +18,15 @@ public class MainActivity extends AppCompatActivity implements TrespassListAdapt
 
   ListView listView;
   TrespassListAdapter trespassListAdapter;
+  Habit defaultHabit;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    setDefaultHabit();
+    TextView toolbarText = (TextView) findViewById(R.id.defaultHabitToolbar);
+    toolbarText.setText(defaultHabit.getName());
     showAllHabits();
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
@@ -48,6 +53,37 @@ public class MainActivity extends AppCompatActivity implements TrespassListAdapt
       }
     });
     populateListView();
+  }
+
+  private void setDefaultHabit() {
+    boolean isThereADefaultHabit = false;
+    Iterable<Habit> habits = new SQLiteHabits(getBaseContext()).iterate();
+    if (!habits.iterator().hasNext()) {
+      new AddHabitDialogFragment().show(getFragmentManager(), "AddHabitDialogFragment");
+      makeFirstHabitDefault();
+      return;
+    }
+
+    for (Habit habit : habits) {
+      if (habit.isDefault()) {
+        isThereADefaultHabit = true;
+        this.defaultHabit = habit;
+      }
+    }
+
+    if (!isThereADefaultHabit) {
+      makeFirstHabitDefault();
+    }
+  }
+
+  private void makeFirstHabitDefault() {
+    Iterable<Habit> habits = new SQLiteHabits(getBaseContext()).iterate();
+    if (habits.iterator().hasNext()) {
+      Habit habit = habits.iterator().next();
+      habit.makeDefault();
+      this.defaultHabit = habit;
+      return;
+    }
   }
 
   public void populateListView() {
