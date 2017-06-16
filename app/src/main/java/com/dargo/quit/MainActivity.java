@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapterCallba
 
   private void setDefaultHabit() {
     boolean isThereADefaultHabit = false;
+    defaultHabit = null;
     Iterable<Habit> habits = new SQLiteHabits(getBaseContext()).iterate();
     if (!habits.iterator().hasNext() && !habitIsBeingRead) {
       habitIsBeingRead = true;
@@ -93,10 +94,18 @@ public class MainActivity extends AppCompatActivity implements ListAdapterCallba
   public void populateListView() {
     listView = (ListView) findViewById(R.id.listview);
     List<Trespass> values = new ArrayList<>();
-    for (Trespass trespass : new SQLiteTrespasses(getBaseContext()).iterate()) {
+    for (Trespass trespass : new SQLiteTrespasses(getBaseContext()).iterate(defaultHabit)) {
       values.add(trespass);
     }
     trespassListAdapter = new TrespassListAdapter(this, values);
+    trespassListAdapter.setCallback(this);
+    listView.setAdapter(trespassListAdapter);
+  }
+
+  public void cleanListView() {
+    listView = (ListView) findViewById(R.id.listview);
+    List<Trespass> emptyList = new ArrayList<>();
+    trespassListAdapter = new TrespassListAdapter(this, emptyList);
     trespassListAdapter.setCallback(this);
     listView.setAdapter(trespassListAdapter);
   }
@@ -143,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapterCallba
     super.onResume();
     Toast.makeText(getBaseContext(), "Resumed", Toast.LENGTH_LONG).show();
     setDefaultHabit();
+    cleanListView();
     populateListView();
   }
 
