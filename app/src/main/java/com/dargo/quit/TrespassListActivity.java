@@ -26,10 +26,8 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    Toast.makeText(getBaseContext(), "Created", Toast.LENGTH_LONG).show();
     habitIsBeingRead = false;
     setDefaultHabit();
-    showAllHabits();
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
@@ -105,13 +103,6 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
     listView.setAdapter(trespassListAdapter);
   }
 
-  private void showAllHabits() {
-    String text = "";
-    for (Habit habit : new SQLiteHabits(getBaseContext()).iterate())
-      text += habit.getName() + ", ";
-    Toast.makeText(getBaseContext(), "Habits are" + text + ".", Toast.LENGTH_LONG).show();
-  }
-
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
@@ -123,7 +114,6 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.list_habits:
-        Toast.makeText(getBaseContext(), "You want to list habits.", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(this, HabitsManagementActivity.class);
         startActivity(intent);
         return true;
@@ -134,7 +124,7 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
 
   public void onUserAddsNewHabit(String newHabit) {
     Habit habit = new SQLiteHabits(getBaseContext()).add(newHabit);
-    Toast.makeText(getBaseContext(), "New habit is " + habit.getName() + ".", Toast.LENGTH_LONG).show();
+    Toast.makeText(getBaseContext(), "Added new habit: " + habit.getName() + ".", Toast.LENGTH_LONG).show();
     habitIsBeingRead = false;
     if (defaultHabit == null) {
       this.defaultHabit = habit;
@@ -145,7 +135,6 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   @Override
   protected void onResume() {
     super.onResume();
-    Toast.makeText(getBaseContext(), "Resumed", Toast.LENGTH_LONG).show();
     setDefaultHabit();
     cleanListView();
     populateListView();
