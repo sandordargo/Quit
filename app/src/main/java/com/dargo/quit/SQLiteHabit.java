@@ -47,7 +47,7 @@ public class SQLiteHabit implements Habit {
             selectionArgs, null, null, null);
     if(cursor.getCount() > 0) {
       cursor.moveToFirst();
-      isDefault = cursor.getInt(cursor.getColumnIndex("ISDEFAULT")) > 1;
+      isDefault = cursor.getInt(cursor.getColumnIndex("ISDEFAULT")) > 0;
     }
     cursor.close();
 

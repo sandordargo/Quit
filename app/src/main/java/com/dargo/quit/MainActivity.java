@@ -45,12 +45,7 @@ public class MainActivity extends AppCompatActivity implements ListAdapterCallba
     addNewTrespassButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Habit habit = null;
-        for (Habit aHabit : new SQLiteHabits(getBaseContext()).iterate()) {
-          habit = aHabit;
-          break;
-        }
-        new SQLiteTrespasses(getBaseContext()).add(habit);
+        new SQLiteTrespasses(getBaseContext()).add(defaultHabit);
         populateListView();
       }
     });
