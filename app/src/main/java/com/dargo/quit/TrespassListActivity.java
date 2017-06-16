@@ -15,7 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ListAdapterCallback {
+public class TrespassListActivity extends AppCompatActivity implements ListAdapterCallback {
 
   ListView listView;
   TrespassListAdapter trespassListAdapter;

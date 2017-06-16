@@ -18,7 +18,7 @@ public class AddHabitDialogFragment extends DialogFragment {
           public void onClick(DialogInterface dialog, int id) {
             EditText newHabitEditText = (EditText) getDialog().findViewById(R.id.habit);
             String value = newHabitEditText.getText().toString();
-            ((MainActivity) getActivity()).onUserAddsNewHabit(value);
+            ((TrespassListActivity) getActivity()).onUserAddsNewHabit(value);
             dialog.dismiss();
           }
         })
