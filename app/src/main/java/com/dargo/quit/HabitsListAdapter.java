@@ -7,7 +7,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -33,18 +32,18 @@ public class HabitsListAdapter extends ArrayAdapter {
 
     public View getView(final int position, View view, final ViewGroup parent) {
         View rowView = context.getLayoutInflater().inflate(R.layout.habit_listview_row, null, true);
+        setUpTextView(position, rowView);
+        setUpDeleteButton(position, rowView);
+        setUpRadioButton(position, rowView);
+        return rowView;
+    }
+
+    private void setUpTextView(int position, View rowView) {
         TextView habitName = (TextView) rowView.findViewById(R.id.habitNameField);
         habitName.setText(habits.get(position).getName());
+    }
 
-        Button deleteButton = (Button) rowView.findViewById(R.id.deleteHabitButton);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new SQLiteHabits(context).delete(habits.get(position));
-                callback.populateListView();
-            }
-        });
-
+    private void setUpRadioButton(final int position, View rowView) {
         RadioButton radioButton = (RadioButton) rowView.findViewById(R.id.radio1);
         radioButton.setChecked(selectedIndex == position);
         radioButton.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +54,17 @@ public class HabitsListAdapter extends ArrayAdapter {
                 habits.get(selectedIndex).makeDefault();
             }
         });
-        return rowView;
+    }
+
+    private void setUpDeleteButton(final int position, View rowView) {
+        Button deleteButton = (Button) rowView.findViewById(R.id.deleteHabitButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new SQLiteHabits(context).delete(habits.get(position));
+                callback.populateListView();
+            }
+        });
     }
 
     public void setCallback(ListAdapterCallback callback) {
