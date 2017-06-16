@@ -10,28 +10,28 @@ import android.widget.TextView;
 import java.util.List;
 
 
-public class TrespassListAdapter extends ArrayAdapter {
+public class HabitsListAdapter extends ArrayAdapter {
     private final Activity context;
-    private final List<Trespass> trespasses;
+    private final List<Habit> habits;
     private ListAdapterCallback callback;
 
 
-    public TrespassListAdapter(Activity context, List<Trespass> trespasses) {
-        super(context, R.layout.trespass_listview_row, trespasses);
+    public HabitsListAdapter(Activity context, List<Habit> habits) {
+        super(context, R.layout.trespass_listview_row, habits);
         this.context = context;
-        this.trespasses = trespasses;
+        this.habits = habits;
     }
 
     public View getView(final int position, View view, final ViewGroup parent) {
-        View rowView = context.getLayoutInflater().inflate(R.layout.trespass_listview_row, null, true);
-        TextView dateField = (TextView) rowView.findViewById(R.id.trespassDateField);
-        dateField.setText(trespasses.get(position).getFormattedDate());
+        View rowView = context.getLayoutInflater().inflate(R.layout.habit_listview_row, null, true);
+        TextView habitName = (TextView) rowView.findViewById(R.id.habitNameField);
+        habitName.setText(habits.get(position).getName());
 
-        Button deleteButton = (Button) rowView.findViewById(R.id.deleteTrespassButton);
+        Button deleteButton = (Button) rowView.findViewById(R.id.deleteHabitButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SQLiteTrespasses(context).delete(trespasses.get(position));
+                new SQLiteHabits(context).delete(habits.get(position));
                 callback.populateListView();
             }
         });

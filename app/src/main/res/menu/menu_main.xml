@@ -2,8 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.dargo.quit.MainActivity" >
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+    <item android:id="@+id/list_habits"
+        android:title="@string/list_habits_title"
         android:orderInCategory="100"
         app:showAsAction="never" />
 </menu>

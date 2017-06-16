@@ -41,4 +41,10 @@ public class SQLiteHabits implements Habits {
     long newRowId = db.insert("HABITS", null, values);
     return new SQLiteHabit(new QuitSqliteDBHelper(context).getReadableDatabase(), newRowId);
   }
+
+  @Override
+  public boolean delete(Habit habit) {
+    SQLiteDatabase db = new QuitSqliteDBHelper(context).getWritableDatabase();
+    return db.delete("HABITS", "ID=" + habit.getId(), null) > 0;
+  }
 }

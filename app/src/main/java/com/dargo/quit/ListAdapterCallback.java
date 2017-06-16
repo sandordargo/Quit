@@ -1,6 +1,6 @@
 package com.dargo.quit;
 
 
-public interface TrespassListAdapterCallback {
+public interface ListAdapterCallback {
     void populateListView();
 }

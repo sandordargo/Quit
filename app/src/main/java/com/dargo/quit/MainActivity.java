@@ -1,5 +1,6 @@
 package com.dargo.quit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -14,19 +15,20 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TrespassListAdapterCallback {
+public class MainActivity extends AppCompatActivity implements ListAdapterCallback {
 
   ListView listView;
   TrespassListAdapter trespassListAdapter;
   Habit defaultHabit;
+  boolean habitIsBeingRead;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    Toast.makeText(getBaseContext(), "Created", Toast.LENGTH_LONG).show();
+    habitIsBeingRead = false;
     setDefaultHabit();
-    TextView toolbarText = (TextView) findViewById(R.id.defaultHabitToolbar);
-    toolbarText.setText(defaultHabit.getName());
     showAllHabits();
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
@@ -58,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements TrespassListAdapt
   private void setDefaultHabit() {
     boolean isThereADefaultHabit = false;
     Iterable<Habit> habits = new SQLiteHabits(getBaseContext()).iterate();
-    if (!habits.iterator().hasNext()) {
+    if (!habits.iterator().hasNext() && !habitIsBeingRead) {
+      habitIsBeingRead = true;
       new AddHabitDialogFragment().show(getFragmentManager(), "AddHabitDialogFragment");
       makeFirstHabitDefault();
       return;
@@ -74,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements TrespassListAdapt
     if (!isThereADefaultHabit) {
       makeFirstHabitDefault();
     }
+    updateTitle();
   }
 
   private void makeFirstHabitDefault() {
@@ -113,22 +117,39 @@ public class MainActivity extends AppCompatActivity implements TrespassListAdapt
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
-
-    //noinspection SimplifiableIfStatement
-    if (id == R.id.action_settings) {
-      return true;
+    switch (item.getItemId()) {
+      case R.id.list_habits:
+        Toast.makeText(getBaseContext(), "You want to list habits.", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, HabitsManagementActivity.class);
+        startActivity(intent);
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
     }
-
-    return super.onOptionsItemSelected(item);
   }
-
 
   public void onUserAddsNewHabit(String newHabit) {
     Habit habit = new SQLiteHabits(getBaseContext()).add(newHabit);
     Toast.makeText(getBaseContext(), "New habit is " + habit.getName() + ".", Toast.LENGTH_LONG).show();
+    habitIsBeingRead = false;
+    if (defaultHabit == null) {
+      this.defaultHabit = habit;
+      updateTitle();
+    }
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    Toast.makeText(getBaseContext(), "Resumed", Toast.LENGTH_LONG).show();
+    setDefaultHabit();
+    populateListView();
+  }
+
+  private void updateTitle() {
+    if (defaultHabit != null) {
+      TextView toolbarText = (TextView) findViewById(R.id.defaultHabitToolbar);
+      toolbarText.setText(defaultHabit.getName());
+    }
   }
 }
