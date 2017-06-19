@@ -11,7 +11,7 @@ public class AddHabitDialogFragment extends DialogFragment {
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-    builder.setView(getActivity().getLayoutInflater().inflate(R.layout.add_new_habit_layout, null));
+    builder.setView(getActivity().getLayoutInflater().inflate(R.layout.manage_habit_layout, null));
 
     builder.setMessage(R.string.add_new_habit)
         .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {

@@ -64,4 +64,11 @@ public class SQLiteHabit implements Habit {
     db.update("HABITS", defaultHabitValues, "ID=" + String.valueOf(this.getId()), null);
   }
 
+  @Override
+  public void updateName(String newName) {
+    ContentValues valuesWithNewName = new ContentValues();
+    valuesWithNewName.put("NAME", newName);
+    db.update("HABITS", valuesWithNewName, "ID=" + String.valueOf(this.getId()), null);
+  }
+
 }

@@ -1,12 +1,14 @@
 package com.dargo.quit;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -34,6 +36,7 @@ public class HabitsListAdapter extends ArrayAdapter {
         View rowView = context.getLayoutInflater().inflate(R.layout.habit_listview_row, null, true);
         setUpTextView(position, rowView);
         setUpDeleteButton(position, rowView);
+        setUpEditButton(position, rowView);
         setUpRadioButton(position, rowView);
         return rowView;
     }
@@ -43,15 +46,14 @@ public class HabitsListAdapter extends ArrayAdapter {
         habitName.setText(habits.get(position).getName());
     }
 
-    private void setUpRadioButton(final int position, View rowView) {
-        RadioButton radioButton = (RadioButton) rowView.findViewById(R.id.radio1);
-        radioButton.setChecked(selectedIndex == position);
-        radioButton.setOnClickListener(new View.OnClickListener() {
+    private void setUpEditButton(final int position, View rowView) {
+        Button editButton = (Button) rowView.findViewById(R.id.editHabitButton);
+        editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notifyDataSetChanged();
-                selectedIndex = position;
-                habits.get(selectedIndex).makeDefault();
+                EditHabitDialogFragment fragment = EditHabitDialogFragment.make(
+                        habits.get(position).getId(), habits.get(position).getName());
+                fragment.show(context.getFragmentManager(), "Edit habit name");
             }
         });
     }
@@ -63,6 +65,19 @@ public class HabitsListAdapter extends ArrayAdapter {
             public void onClick(View v) {
                 new SQLiteHabits(context).delete(habits.get(position));
                 callback.populateListView();
+            }
+        });
+    }
+
+    private void setUpRadioButton(final int position, View rowView) {
+        RadioButton radioButton = (RadioButton) rowView.findViewById(R.id.radio1);
+        radioButton.setChecked(selectedIndex == position);
+        radioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notifyDataSetChanged();
+                selectedIndex = position;
+                habits.get(selectedIndex).makeDefault();
             }
         });
     }

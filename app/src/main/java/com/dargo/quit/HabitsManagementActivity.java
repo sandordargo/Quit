@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,5 +43,11 @@ public class HabitsManagementActivity extends AppCompatActivity implements ListA
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return true;
+    }
+
+    public void updateHabitName(long habitId, String habitName) {
+        Habit habit = new SQLiteHabit(
+                new QuitSqliteDBHelper(getBaseContext()).getWritableDatabase(), habitId);
+        habit.updateName(habitName);
     }
 }
