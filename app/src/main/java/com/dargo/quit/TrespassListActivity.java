@@ -43,7 +43,7 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
     addNewTrespassButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        new SQLiteTrespasses(getBaseContext()).add(defaultHabit);
+        new ConstSQLiteTrespasses(getBaseContext()).add(defaultHabit);
         populateListView();
       }
     });
@@ -87,7 +87,7 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   public void populateListView() {
     listView = (ListView) findViewById(R.id.listview);
     List<Trespass> values = new ArrayList<>();
-    for (Trespass trespass : new SQLiteTrespasses(getBaseContext()).iterate(defaultHabit)) {
+    for (Trespass trespass : new ConstSQLiteTrespasses(getBaseContext()).iterate(defaultHabit)) {
       values.add(trespass);
     }
     trespassListAdapter = new TrespassListAdapter(this, values);

@@ -31,7 +31,7 @@ public class TrespassListAdapter extends ArrayAdapter {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SQLiteTrespasses(context).delete(trespasses.get(position));
+                new ConstSQLiteTrespasses(context).delete(trespasses.get(position));
                 callback.populateListView();
             }
         });
