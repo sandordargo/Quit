@@ -6,4 +6,5 @@
     <string name="add_new_habit">Add new habit</string>
     <string name="new_habit">new habit</string>
     <string name="edit_habit_name">Edit habit name</string>
+    <string name="update">Update</string>
 </resources>
