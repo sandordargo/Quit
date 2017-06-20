@@ -24,6 +24,25 @@ public class TrespassListAdapter extends ArrayAdapter {
 
     public View getView(final int position, View view, final ViewGroup parent) {
         View rowView = context.getLayoutInflater().inflate(R.layout.trespass_listview_row, null, true);
+        setUpEditButton(position, rowView);
+        setUpDeleteButton(position, rowView);
+        return rowView;
+    }
+
+    private void setUpEditButton(final int position, View rowView) {
+        Button editButton = (Button) rowView.findViewById(R.id.editTrespassButton);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditTrespassDateDialogFragment fragment =
+                        EditTrespassDateDialogFragment.make(trespasses.get(position).getId(),
+                                trespasses.get(position).getDate());
+                fragment.show(context.getFragmentManager(), "Edit trespass date");
+            }
+        });
+    }
+
+    private void setUpDeleteButton(final int position, View rowView) {
         TextView dateField = (TextView) rowView.findViewById(R.id.trespassDateField);
         dateField.setText(trespasses.get(position).getFormattedDate());
 
@@ -35,8 +54,6 @@ public class TrespassListAdapter extends ArrayAdapter {
                 callback.populateListView();
             }
         });
-
-        return rowView;
     }
 
     public void setCallback(ListAdapterCallback callback) {

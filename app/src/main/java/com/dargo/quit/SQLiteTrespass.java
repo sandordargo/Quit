@@ -1,5 +1,6 @@
 package com.dargo.quit;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -42,4 +43,10 @@ public class SQLiteTrespass implements Trespass {
         return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(getDate());
     }
 
+    @Override
+    public void updateDate(Date newDate) {
+        ContentValues valuesWithNewDate = new ContentValues();
+        valuesWithNewDate.put("COMMIT_DATE", newDate.getTime());
+        db.update("TRESPASSES", valuesWithNewDate, "ID=" + String.valueOf(this.getId()), null);
+    }
 }

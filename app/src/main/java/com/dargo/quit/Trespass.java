@@ -8,4 +8,5 @@ public interface Trespass {
     Date getDate();
 
     String getFormattedDate();
+    void updateDate(Date newDate);
 }

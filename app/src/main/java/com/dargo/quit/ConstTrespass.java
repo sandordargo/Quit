@@ -27,4 +27,9 @@ public class ConstTrespass implements Trespass {
     public String getFormattedDate() {
         return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(getDate());
     }
+
+    @Override
+    public void updateDate(Date newDate) {
+        this.origin.updateDate(newDate);
+    }
 }

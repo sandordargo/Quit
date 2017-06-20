@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TrespassListActivity extends AppCompatActivity implements ListAdapterCallback {
@@ -145,5 +146,17 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
       TextView toolbarText = (TextView) findViewById(R.id.defaultHabitToolbar);
       toolbarText.setText(defaultHabit.getName());
     }
+  }
+
+  public void callTimePicker(long id, Date date) {
+    EditTrespassTimeDialogFragment fragment = EditTrespassTimeDialogFragment.make(id, date);
+    fragment.show(getFragmentManager(), "Edit trespass date");
+  }
+
+  public void updateTrespassDate(long trespassId, Date newDate) {
+    Trespass trespass = new SQLiteTrespass(
+            new QuitSqliteDBHelper(getBaseContext()).getWritableDatabase(), trespassId);
+    trespass.updateDate(newDate);
+    populateListView();
   }
 }
