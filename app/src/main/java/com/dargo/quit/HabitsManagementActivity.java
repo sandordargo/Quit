@@ -26,7 +26,7 @@ public class HabitsManagementActivity extends AppCompatActivity implements ListA
     public void populateListView() {
         listView = (ListView) findViewById(R.id.habits_listview);
         List<Habit> values = new ArrayList<>();
-        for (Habit habit : new SQLiteHabits(getBaseContext()).iterate()) {
+        for (Habit habit : new ConstSQLiteHabits(getBaseContext()).iterate()) {
             values.add(habit);
         }
         habitsListAdapter = new HabitsListAdapter(this, values);
@@ -49,5 +49,6 @@ public class HabitsManagementActivity extends AppCompatActivity implements ListA
         Habit habit = new SQLiteHabit(
                 new QuitSqliteDBHelper(getBaseContext()).getWritableDatabase(), habitId);
         habit.updateName(habitName);
+        populateListView();
     }
 }

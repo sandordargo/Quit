@@ -53,7 +53,7 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   private void setDefaultHabit() {
     boolean isThereADefaultHabit = false;
     defaultHabit = null;
-    Iterable<Habit> habits = new SQLiteHabits(getBaseContext()).iterate();
+    Iterable<Habit> habits = new ConstSQLiteHabits(getBaseContext()).iterate();
     if (!habits.iterator().hasNext() && !habitIsBeingRead) {
       habitIsBeingRead = true;
       new AddHabitDialogFragment().show(getFragmentManager(), "AddHabitDialogFragment");
@@ -75,7 +75,7 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   }
 
   private void makeFirstHabitDefault() {
-    Iterable<Habit> habits = new SQLiteHabits(getBaseContext()).iterate();
+    Iterable<Habit> habits = new ConstSQLiteHabits(getBaseContext()).iterate();
     if (habits.iterator().hasNext()) {
       Habit habit = habits.iterator().next();
       habit.makeDefault();
@@ -123,7 +123,7 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   }
 
   public void onUserAddsNewHabit(String newHabit) {
-    Habit habit = new SQLiteHabits(getBaseContext()).add(newHabit);
+    Habit habit = new ConstSQLiteHabits(getBaseContext()).add(newHabit);
     Toast.makeText(getBaseContext(), "Added new habit: " + habit.getName() + ".", Toast.LENGTH_LONG).show();
     habitIsBeingRead = false;
     if (defaultHabit == null) {
