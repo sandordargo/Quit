@@ -24,7 +24,7 @@ public class ConstSQLiteTrespasses implements Trespasses {
 
         List<Trespass> trespasses = new ArrayList<>();
         Cursor cursor = db.query("TRESPASSES", projection, null,
-                null, null, null, null);
+                null, null, null, "COMMIT_DATE DESC");
         while(cursor.moveToNext()) {
             int id = cursor.getInt(
                     cursor.getColumnIndexOrThrow("ID"));
@@ -47,7 +47,7 @@ public class ConstSQLiteTrespasses implements Trespasses {
         String[] selectionArgs = {String.valueOf(habit.getId())};
         List<Trespass> trespasses = new ArrayList<>();
         Cursor cursor = db.query("TRESPASSES", projection, selection,
-                selectionArgs, null, null, null);
+                selectionArgs, null, null, "COMMIT_DATE DESC");
         while(cursor.moveToNext()) {
             int id = cursor.getInt(
                     cursor.getColumnIndexOrThrow("ID"));
