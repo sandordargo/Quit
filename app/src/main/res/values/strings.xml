@@ -8,4 +8,6 @@
     <string name="edit_habit_name">Edit habit name</string>
     <string name="edit_trespass_date">Edit trespass date</string>
     <string name="update">Update</string>
+    <string name="list_trespasses_by_day_menu_item_title">Trespasses by day</string>
+    <string name="list_trespasses_by_day">List trespasses by day</string>
 </resources>

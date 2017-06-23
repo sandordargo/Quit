@@ -115,8 +115,10 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.list_habits:
-        Intent intent = new Intent(this, HabitsManagementActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, HabitsManagementActivity.class));
+        return true;
+      case R.id.list_trespasses_by_day_menu_item:
+        startActivity(new Intent(this, TrespassesByDayListActivity.class));
         return true;
       default:
         return super.onOptionsItemSelected(item);
