@@ -53,20 +53,14 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
 
   private void setDefaultHabit() {
     boolean isThereADefaultHabit = false;
-    defaultHabit = null;
-    Iterable<Habit> habits = new ConstSQLiteHabits(getBaseContext()).iterate();
-    if (!habits.iterator().hasNext() && !habitIsBeingRead) {
+    defaultHabit = new ConstSQLiteHabits(getBaseContext()).getDefaultHabit();
+    if (defaultHabit == null && !habitIsBeingRead) {
       habitIsBeingRead = true;
       new AddHabitDialogFragment().show(getFragmentManager(), "AddHabitDialogFragment");
       makeFirstHabitDefault();
       return;
-    }
-
-    for (Habit habit : habits) {
-      if (habit.isDefault()) {
-        isThereADefaultHabit = true;
-        this.defaultHabit = habit;
-      }
+    } else {
+      isThereADefaultHabit = true;
     }
 
     if (!isThereADefaultHabit) {

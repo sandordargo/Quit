@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ConstSQLiteHabits implements Habits {
@@ -50,5 +51,26 @@ public class ConstSQLiteHabits implements Habits {
     public boolean delete(Habit habit) {
         SQLiteDatabase db = new QuitSqliteDBHelper(context).getWritableDatabase();
         return db.delete("HABITS", "ID=" + habit.getId(), null) > 0;
+    }
+
+    @Override
+    public Habit getDefaultHabit() {
+        SQLiteDatabase db = new QuitSqliteDBHelper(context).getReadableDatabase();
+        String[] projection = {"ID", "NAME"};
+        String selection = "ISDEFAULT=?";
+        String[] selectionArgs = {"1"};
+        Habit habit = null;
+        Cursor cursor = db.query("HABITS", projection, selection,
+                selectionArgs, null, null, null);
+        while(cursor.moveToNext()) {
+            int id = cursor.getInt(
+                    cursor.getColumnIndexOrThrow("ID"));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow("NAME"));
+            habit = new ConstHabit(new SQLiteHabit(db, id), name, true);
+            break;
+        }
+        cursor.close();
+        db.close();
+        return habit;
     }
 }

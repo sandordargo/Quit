@@ -20,17 +20,8 @@ public class TrespassesByDayListActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_trespasses_by_day_list);
-    setDefaultHabit();
+    this.defaultHabit = new ConstSQLiteHabits(getBaseContext()).getDefaultHabit();
     populateListView();
-  }
-
-  private void setDefaultHabit() {
-    Iterable<Habit> habits = new ConstSQLiteHabits(getBaseContext()).iterate();
-    if (habits.iterator().hasNext()) {
-      Habit habit = habits.iterator().next();
-      habit.makeDefault();
-      this.defaultHabit = habit;
-    }
   }
 
   public void populateListView() {
