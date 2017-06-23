@@ -30,8 +30,9 @@ public class TrespassListAdapter extends ArrayAdapter {
     }
 
     private void setUpEditButton(final int position, View rowView) {
-        Button editButton = (Button) rowView.findViewById(R.id.editTrespassButton);
-        editButton.setOnClickListener(new View.OnClickListener() {
+        TextView dateField = (TextView) rowView.findViewById(R.id.trespassDateField);
+        dateField.setText(trespasses.get(position).getFormattedDate());
+        dateField.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditTrespassDateDialogFragment fragment =
@@ -43,9 +44,6 @@ public class TrespassListAdapter extends ArrayAdapter {
     }
 
     private void setUpDeleteButton(final int position, View rowView) {
-        TextView dateField = (TextView) rowView.findViewById(R.id.trespassDateField);
-        dateField.setText(trespasses.get(position).getFormattedDate());
-
         Button deleteButton = (Button) rowView.findViewById(R.id.deleteTrespassButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
