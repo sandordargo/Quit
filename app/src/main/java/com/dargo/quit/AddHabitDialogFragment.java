@@ -7,8 +7,18 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.EditText;
 
+import java.util.Date;
+
 public class AddHabitDialogFragment extends DialogFragment {
-  @Override
+    public static AddHabitDialogFragment make(String sourceActivity) {
+        Bundle bundle = new Bundle();
+        bundle.putString("SOURCE_ACTIVITY", sourceActivity);
+        AddHabitDialogFragment fragment = new AddHabitDialogFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     builder.setView(getActivity().getLayoutInflater().inflate(R.layout.manage_habit_layout, null));
@@ -18,7 +28,11 @@ public class AddHabitDialogFragment extends DialogFragment {
           public void onClick(DialogInterface dialog, int id) {
             EditText newHabitEditText = (EditText) getDialog().findViewById(R.id.habit);
             String value = newHabitEditText.getText().toString();
-            ((TrespassListActivity) getActivity()).onUserAddsNewHabit(value);
+              if (getArguments().getString("SOURCE_ACTIVITY").equals("OVERVIEW")) {
+                  ((ActivityOverview) getActivity()).onUserAddsNewHabit(value);
+              } else if (getArguments().getString("SOURCE_ACTIVITY").equals("TRESPASS_LIST")) {
+                  ((TrespassListActivity) getActivity()).onUserAddsNewHabit(value);
+              }
             dialog.dismiss();
           }
         })

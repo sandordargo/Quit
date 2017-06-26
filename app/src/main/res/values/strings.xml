@@ -10,4 +10,5 @@
     <string name="update">Update</string>
     <string name="list_trespasses_by_day_menu_item_title">Trespasses by day</string>
     <string name="list_trespasses_by_day">List trespasses by day</string>
+    <string name="list_trespasses_menu_item_title">Trespasses</string>
 </resources>

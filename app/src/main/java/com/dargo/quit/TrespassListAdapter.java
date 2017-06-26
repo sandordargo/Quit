@@ -14,12 +14,19 @@ public class TrespassListAdapter extends ArrayAdapter {
     private final Activity context;
     private final List<Trespass> trespasses;
     private ListAdapterCallback callback;
+    private String source;
 
 
-    public TrespassListAdapter(Activity context, List<Trespass> trespasses) {
+    public TrespassListAdapter(Activity context, List<Trespass> trespasses, ListAdapterCallback callback) {
         super(context, R.layout.trespass_listview_row, trespasses);
         this.context = context;
         this.trespasses = trespasses;
+        this.callback = callback;
+        if (this.callback instanceof ActivityOverview) {
+            source = "OVERVIEW";
+        } else if (this.callback instanceof TrespassListActivity) {
+            source = "TRESPASS_LIST";
+        }
     }
 
     public View getView(final int position, View view, final ViewGroup parent) {
@@ -37,7 +44,7 @@ public class TrespassListAdapter extends ArrayAdapter {
             public void onClick(View v) {
                 EditTrespassDateDialogFragment fragment =
                         EditTrespassDateDialogFragment.make(trespasses.get(position).getId(),
-                                trespasses.get(position).getDate());
+                                trespasses.get(position).getDate(), source);
                 fragment.show(context.getFragmentManager(), "Edit trespass date");
             }
         });

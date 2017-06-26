@@ -1,6 +1,7 @@
 package com.dargo.quit;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -12,11 +13,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.ValueDependentColor;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
+
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
-public class TrespassListActivity extends AppCompatActivity implements ListAdapterCallback, TrespassAdderCallback {
+public class ActivityOverview extends AppCompatActivity implements ListAdapterCallback, TrespassAdderCallback {
 
   ListView listView;
   TrespassListAdapter trespassListAdapter;
@@ -26,20 +34,22 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    setContentView(R.layout.activity_overview);
     habitIsBeingRead = false;
     setDefaultHabit();
+    Toolbar toolbar = (Toolbar) findViewById(R.id.overview_toolbar);
+    setSupportActionBar(toolbar);
 
-    FloatingActionButton addNewHabitButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
+    FloatingActionButton addNewHabitButton = (FloatingActionButton) findViewById(R.id.floatingActionButtonOverviewActivity);
     addNewHabitButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        AddHabitDialogFragment fragment = AddHabitDialogFragment.make("TRESPASS_LIST");
+        AddHabitDialogFragment fragment = AddHabitDialogFragment.make("OVERVIEW");
         fragment.show(getFragmentManager(), "AddHabitDialogFragment");
       }
     });
 
-    FloatingActionButton addNewTrespassButton = (FloatingActionButton) findViewById(R.id.addTrespassButton);
+    FloatingActionButton addNewTrespassButton = (FloatingActionButton) findViewById(R.id.addTrespassButtonOverviewActivity);
     addNewTrespassButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -48,6 +58,46 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
       }
     });
     populateListView();
+
+    List<TrespassCounter> values = new ArrayList<>();
+    for (TrespassCounter trespass :
+            new ConstSQLiteTrespassCounters(getBaseContext()).trespassesPerDayFor(defaultHabit)) {
+      values.add(trespass);
+    }
+
+    GraphView graph = (GraphView) findViewById(R.id.trespassesGraph);
+
+    int size = values.size();
+    DataPoint[] dataPoints = new DataPoint[size];
+    for (int i = 0 ; i<size; i++) {
+      DataPoint v = new DataPoint(values.get(i).getDateOfDay().getTime(), values.get(i).getTrespassesPerDay());
+      dataPoints[i] = v;
+    }
+    BarGraphSeries<DataPoint> series1 = new BarGraphSeries<>(dataPoints);
+
+
+    graph.addSeries(series1);
+    series1.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+      @Override
+      public int get(DataPoint data) {
+        return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
+      }
+    });
+
+
+    series1.setSpacing(50);
+    series1.setDrawValuesOnTop(true);
+    graph.getViewport().setMaxY(series1.getHighestValueY()+1);
+    graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getBaseContext()));
+
+    Date first = new Date((long) series1.getHighestValueX());
+    Date last = new Date((long) series1.getLowestValueX());
+    Toast.makeText(getBaseContext(), String.valueOf(first), Toast.LENGTH_LONG).show();
+    graph.getViewport().setMinX(first.getTime());
+    graph.getViewport().setMaxX(last.getTime());
+    graph.getViewport().setXAxisBoundsManual(true);
+    graph.getViewport().setYAxisBoundsManual(true);
+    graph.getGridLabelRenderer().setHumanRounding(false);
   }
 
   private void setDefaultHabit() {
@@ -79,7 +129,7 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   }
 
   public void populateListView() {
-    listView = (ListView) findViewById(R.id.listview);
+    listView = (ListView) findViewById(R.id.overview_listview);
     List<Trespass> values = new ArrayList<>();
     for (Trespass trespass : new ConstSQLiteTrespasses(getBaseContext()).iterate(defaultHabit)) {
       values.add(trespass);
@@ -89,7 +139,7 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   }
 
   public void cleanListView() {
-    listView = (ListView) findViewById(R.id.listview);
+    listView = (ListView) findViewById(R.id.overview_listview);
     List<Trespass> emptyList = new ArrayList<>();
     trespassListAdapter = new TrespassListAdapter(this, emptyList, this);
     listView.setAdapter(trespassListAdapter);
@@ -105,6 +155,9 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
+      case R.id.list_trespasses_for_one_habit:
+        startActivity(new Intent(this, TrespassListActivity.class));
+        return true;
       case R.id.list_habits:
         startActivity(new Intent(this, HabitsManagementActivity.class));
         return true;
@@ -136,14 +189,14 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
 
   private void updateTitle() {
     if (defaultHabit != null) {
-      TextView toolbarText = (TextView) findViewById(R.id.defaultHabitToolbar);
+      TextView toolbarText = (TextView) findViewById(R.id.defaultHabitOverviewToolbar);
       toolbarText.setText(defaultHabit.getName());
     }
   }
 
   @Override
   public void callTimePicker(long id, Date date) {
-    EditTrespassTimeDialogFragment fragment = EditTrespassTimeDialogFragment.make(id, date, "TRESPASS_LIST");
+    EditTrespassTimeDialogFragment fragment = EditTrespassTimeDialogFragment.make(id, date, "OVERVIEW");
     fragment.show(getFragmentManager(), "Edit trespass date");
   }
 

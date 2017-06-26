@@ -13,10 +13,11 @@ import java.util.Date;
 public class EditTrespassTimeDialogFragment extends DialogFragment implements
         TimePickerDialog.OnTimeSetListener {
 
-    public static EditTrespassTimeDialogFragment make(long trespassId, Date date) {
+    public static EditTrespassTimeDialogFragment make(long trespassId, Date date, String sourceActivity) {
         Bundle bundle = new Bundle();
         bundle.putLong("TRESPASS_ID", trespassId);
         bundle.putLong("DATE", date.getTime());
+        bundle.putString("SOURCE_ACTIVITY", sourceActivity);
         EditTrespassTimeDialogFragment fragment = new EditTrespassTimeDialogFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -37,8 +38,13 @@ public class EditTrespassTimeDialogFragment extends DialogFragment implements
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         final Calendar calendar = Calendar.getInstance();
         setNewDate(hourOfDay, minute, calendar);
-        ((TrespassListActivity) getActivity()).updateTrespassDate(
-                getArguments().getLong("TRESPASS_ID"), new Date(calendar.getTimeInMillis()));
+        if (getArguments().getString("SOURCE_ACTIVITY").equals("OVERVIEW")) {
+            ((ActivityOverview) getActivity()).updateTrespassDate(
+                    getArguments().getLong("TRESPASS_ID"), new Date(calendar.getTimeInMillis()));
+        } else if (getArguments().getString("SOURCE_ACTIVITY").equals("TRESPASS_LIST")) {
+            ((TrespassListActivity) getActivity()).updateTrespassDate(
+                    getArguments().getLong("TRESPASS_ID"), new Date(calendar.getTimeInMillis()));
+        }
     }
 
     private void setNewDate(int hourOfDay, int minute, Calendar calendar) {
