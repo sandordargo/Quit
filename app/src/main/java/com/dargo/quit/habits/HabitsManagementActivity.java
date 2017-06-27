@@ -1,11 +1,14 @@
-package com.dargo.quit;
+package com.dargo.quit.habits;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.dargo.quit.utils.ListAdapterCallback;
+import com.dargo.quit.utils.QuitSqliteDBHelper;
+import com.dargo.quit.R;
 
 import java.util.ArrayList;
 import java.util.List;

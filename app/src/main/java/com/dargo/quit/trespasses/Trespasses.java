@@ -1,4 +1,6 @@
-package com.dargo.quit;
+package com.dargo.quit.trespasses;
+
+import com.dargo.quit.habits.Habit;
 
 public interface Trespasses {
     Iterable<Trespass> iterate();

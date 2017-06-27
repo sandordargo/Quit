@@ -1,4 +1,4 @@
-package com.dargo.quit;
+package com.dargo.quit.habits;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,7 +7,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.EditText;
 
-import java.util.Date;
+import com.dargo.quit.trespasses.ActivityOverview;
+import com.dargo.quit.R;
+import com.dargo.quit.trespasses.TrespassListActivity;
 
 public class AddHabitDialogFragment extends DialogFragment {
     public static AddHabitDialogFragment make(String sourceActivity) {

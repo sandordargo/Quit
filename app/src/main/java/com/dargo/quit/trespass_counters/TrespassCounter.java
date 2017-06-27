@@ -1,4 +1,4 @@
-package com.dargo.quit;
+package com.dargo.quit.trespass_counters;
 
 
 import java.util.Date;

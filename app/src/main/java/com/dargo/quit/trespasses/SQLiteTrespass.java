@@ -1,4 +1,4 @@
-package com.dargo.quit;
+package com.dargo.quit.trespasses;
 
 import android.content.ContentValues;
 import android.database.Cursor;

@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.dargo.quit.TrespassListActivity" >
+    tools:context="com.dargo.quit.trespasses.TrespassListActivity" >
     <item android:id="@+id/list_habits"
         android:title="@string/list_habits_title"
         android:orderInCategory="100"

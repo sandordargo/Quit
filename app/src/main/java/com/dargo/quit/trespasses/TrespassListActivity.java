@@ -1,16 +1,24 @@
-package com.dargo.quit;
+package com.dargo.quit.trespasses;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.dargo.quit.habits.AddHabitDialogFragment;
+import com.dargo.quit.utils.ListAdapterCallback;
+import com.dargo.quit.utils.QuitSqliteDBHelper;
+import com.dargo.quit.R;
+import com.dargo.quit.trespass_counters.TrespassesByDayListActivity;
+import com.dargo.quit.habits.ConstSQLiteHabits;
+import com.dargo.quit.habits.Habit;
+import com.dargo.quit.habits.HabitsManagementActivity;
 
 import java.util.ArrayList;
 import java.util.Date;

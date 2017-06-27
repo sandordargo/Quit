@@ -1,4 +1,4 @@
-package com.dargo.quit;
+package com.dargo.quit.habits;
 
 
 import android.content.ContentValues;
@@ -6,8 +6,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.dargo.quit.utils.QuitSqliteDBHelper;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ConstSQLiteHabits implements Habits {

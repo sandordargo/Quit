@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".ActivityOverview"
+            android:name=".trespasses.ActivityOverview"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
@@ -19,26 +19,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TrespassListActivity"
-            android:parentActivityName=".ActivityOverview" >
+        <activity android:name=".trespasses.TrespassListActivity"
+            android:parentActivityName=".trespasses.ActivityOverview" >
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityOverview" />
+                android:value=".trespasses.ActivityOverview" />
         </activity>
-        <activity android:name=".HabitsManagementActivity"
-            android:parentActivityName=".ActivityOverview" >
+        <activity android:name=".habits.HabitsManagementActivity"
+            android:parentActivityName=".trespasses.ActivityOverview" >
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityOverview" />
+                android:value=".trespasses.ActivityOverview" />
         </activity>
-        <activity android:name=".TrespassesByDayListActivity"
-            android:parentActivityName=".ActivityOverview" >
+        <activity android:name=".trespass_counters.TrespassesByDayListActivity"
+            android:parentActivityName=".trespasses.ActivityOverview" >
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityOverview" />
+                android:value=".trespasses.ActivityOverview" />
         </activity>
     </application>
 

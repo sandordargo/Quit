@@ -1,10 +1,13 @@
-package com.dargo.quit;
+package com.dargo.quit.trespass_counters;
 
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.dargo.quit.R;
+import com.dargo.quit.trespass_counters.TrespassCounter;
 
 import java.text.SimpleDateFormat;
 import java.util.List;

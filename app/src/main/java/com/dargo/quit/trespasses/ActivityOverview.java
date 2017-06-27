@@ -1,4 +1,4 @@
-package com.dargo.quit;
+package com.dargo.quit.trespasses;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -13,6 +13,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dargo.quit.utils.ListAdapterCallback;
+import com.dargo.quit.utils.QuitSqliteDBHelper;
+import com.dargo.quit.R;
+import com.dargo.quit.trespass_counters.TrespassesByDayListActivity;
+import com.dargo.quit.habits.AddHabitDialogFragment;
+import com.dargo.quit.habits.ConstSQLiteHabits;
+import com.dargo.quit.habits.Habit;
+import com.dargo.quit.habits.HabitsManagementActivity;
+import com.dargo.quit.trespass_counters.ConstSQLiteTrespassCounters;
+import com.dargo.quit.trespass_counters.TrespassCounter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;

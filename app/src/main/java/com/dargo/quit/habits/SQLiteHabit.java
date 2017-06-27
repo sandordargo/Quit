@@ -1,8 +1,10 @@
-package com.dargo.quit;
+package com.dargo.quit.habits;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.dargo.quit.habits.Habit;
 
 public class SQLiteHabit implements Habit {
   private final SQLiteDatabase db;

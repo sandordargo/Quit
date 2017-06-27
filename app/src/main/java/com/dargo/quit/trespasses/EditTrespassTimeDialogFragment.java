@@ -1,4 +1,4 @@
-package com.dargo.quit;
+package com.dargo.quit.trespasses;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

@@ -1,9 +1,12 @@
-package com.dargo.quit;
+package com.dargo.quit.trespass_counters;
 
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.dargo.quit.utils.QuitSqliteDBHelper;
+import com.dargo.quit.habits.Habit;
 
 import java.util.ArrayList;
 import java.util.Date;

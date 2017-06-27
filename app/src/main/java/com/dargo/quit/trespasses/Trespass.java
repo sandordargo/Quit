@@ -1,4 +1,4 @@
-package com.dargo.quit;
+package com.dargo.quit.trespasses;
 
 
 import java.util.Date;

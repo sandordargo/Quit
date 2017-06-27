@@ -1,4 +1,4 @@
-package com.dargo.quit;
+package com.dargo.quit.trespass_counters;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+
+import com.dargo.quit.R;
+import com.dargo.quit.habits.ConstSQLiteHabits;
+import com.dargo.quit.habits.Habit;
+import com.dargo.quit.habits.HabitsManagementActivity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.dargo.quit;
+package com.dargo.quit.habits;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import com.dargo.quit.R;
 
 public class EditHabitDialogFragment extends DialogFragment {
 

@@ -1,4 +1,4 @@
-package com.dargo.quit;
+package com.dargo.quit.utils;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
