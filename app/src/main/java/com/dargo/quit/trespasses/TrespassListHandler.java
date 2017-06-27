@@ -25,7 +25,7 @@ public class TrespassListHandler {
         this.activity = activity;
         this.context = context;
     }
-    
+
     public void populateListView(Habit habit) {
         listView = (ListView) activity.findViewById(listViewId);
         List<Trespass> values = new ArrayList<>();

@@ -1,6 +1,5 @@
 package com.dargo.quit.trespass_counters;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -10,7 +9,7 @@ import android.widget.ListView;
 import com.dargo.quit.R;
 import com.dargo.quit.habits.ConstSQLiteHabits;
 import com.dargo.quit.habits.Habit;
-import com.dargo.quit.habits.HabitsManagementActivity;
+import com.dargo.quit.utils.OptionsItemSelector;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +19,14 @@ public class TrespassesByDayListActivity extends AppCompatActivity {
   ListView listView;
   TrespassesByDayListAdapter listAdapter;
   Habit defaultHabit;
+  private OptionsItemSelector optionsSelector;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_trespasses_by_day_list);
     this.defaultHabit = new ConstSQLiteHabits(getBaseContext()).getDefaultHabit();
+    this.optionsSelector = new OptionsItemSelector(this);
     populateListView();
   }
 
@@ -55,14 +56,8 @@ public class TrespassesByDayListActivity extends AppCompatActivity {
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.list_habits:
-        Intent intent = new Intent(this, HabitsManagementActivity.class);
-        startActivity(intent);
-        return true;
-      default:
-        return super.onOptionsItemSelected(item);
-    }
+    startActivity(optionsSelector.select(item));
+    return true;
   }
 
   @Override

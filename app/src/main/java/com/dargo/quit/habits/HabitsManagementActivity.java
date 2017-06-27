@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.dargo.quit.utils.ListAdapterCallback;
+import com.dargo.quit.utils.OptionsItemSelector;
 import com.dargo.quit.utils.QuitSqliteDBHelper;
 import com.dargo.quit.R;
 
@@ -17,11 +18,13 @@ import java.util.List;
 public class HabitsManagementActivity extends AppCompatActivity implements ListAdapterCallback {
     private ListView listView;
     private HabitsListAdapter habitsListAdapter;
+    private OptionsItemSelector optionsSelector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habits_management);
+        this.optionsSelector = new OptionsItemSelector(this);
         populateListView();
     }
 
@@ -39,12 +42,13 @@ public class HabitsManagementActivity extends AppCompatActivity implements ListA
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        startActivity(optionsSelector.select(item));
         return true;
     }
 

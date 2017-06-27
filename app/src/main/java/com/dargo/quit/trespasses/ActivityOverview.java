@@ -1,6 +1,5 @@
 package com.dargo.quit.trespasses;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,11 +15,10 @@ import com.dargo.quit.R;
 import com.dargo.quit.habits.AddHabitDialogFragment;
 import com.dargo.quit.habits.ConstSQLiteHabits;
 import com.dargo.quit.habits.Habit;
-import com.dargo.quit.habits.HabitsManagementActivity;
 import com.dargo.quit.trespass_counters.ConstSQLiteTrespassCounters;
 import com.dargo.quit.trespass_counters.TrespassCounter;
-import com.dargo.quit.trespass_counters.TrespassesByDayListActivity;
 import com.dargo.quit.utils.ListAdapterCallback;
+import com.dargo.quit.utils.OptionsItemSelector;
 import com.dargo.quit.utils.QuitSqliteDBHelper;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
@@ -37,13 +35,15 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
   Habit defaultHabit;
   boolean habitIsBeingRead;
   private TrespassListHandler trespassListHandler;
+  private OptionsItemSelector optionsSelector;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_overview);
-    trespassListHandler = new TrespassListHandler(R.id.overview_listview, this, this, this);
-    habitIsBeingRead = false;
+    this.trespassListHandler = new TrespassListHandler(R.id.overview_listview, this, this, this);
+    this.optionsSelector = new OptionsItemSelector(this);
+    this.habitIsBeingRead = false;
     setDefaultHabit();
     Toolbar toolbar = (Toolbar) findViewById(R.id.overview_toolbar);
     setSupportActionBar(toolbar);
@@ -155,19 +155,8 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.list_trespasses_for_one_habit:
-        startActivity(new Intent(this, TrespassListActivity.class));
-        return true;
-      case R.id.list_habits:
-        startActivity(new Intent(this, HabitsManagementActivity.class));
-        return true;
-      case R.id.list_trespasses_by_day_menu_item:
-        startActivity(new Intent(this, TrespassesByDayListActivity.class));
-        return true;
-      default:
-        return super.onOptionsItemSelected(item);
-    }
+    startActivity(optionsSelector.select(item));
+    return true;
   }
 
   public void onUserAddsNewHabit(String newHabit) {

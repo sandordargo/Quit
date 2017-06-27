@@ -1,6 +1,5 @@
 package com.dargo.quit.trespasses;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +13,8 @@ import com.dargo.quit.R;
 import com.dargo.quit.habits.AddHabitDialogFragment;
 import com.dargo.quit.habits.ConstSQLiteHabits;
 import com.dargo.quit.habits.Habit;
-import com.dargo.quit.habits.HabitsManagementActivity;
-import com.dargo.quit.trespass_counters.TrespassesByDayListActivity;
 import com.dargo.quit.utils.ListAdapterCallback;
+import com.dargo.quit.utils.OptionsItemSelector;
 import com.dargo.quit.utils.QuitSqliteDBHelper;
 
 import java.util.Date;
@@ -26,14 +24,16 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   Habit defaultHabit;
   boolean habitIsBeingRead;
   TrespassListHandler trespassListHandler;
+  private OptionsItemSelector optionsSelector;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    habitIsBeingRead = false;
+    this.optionsSelector = new OptionsItemSelector(this);
+    this.habitIsBeingRead = false;
     setDefaultHabit();
-    trespassListHandler = new TrespassListHandler(R.id.listview, this, this, this);
+    this.trespassListHandler = new TrespassListHandler(R.id.listview, this, this, this);
 
     FloatingActionButton addNewHabitButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
     addNewHabitButton.setOnClickListener(new View.OnClickListener() {
@@ -100,16 +100,8 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.list_habits:
-        startActivity(new Intent(this, HabitsManagementActivity.class));
-        return true;
-      case R.id.list_trespasses_by_day_menu_item:
-        startActivity(new Intent(this, TrespassesByDayListActivity.class));
-        return true;
-      default:
-        return super.onOptionsItemSelected(item);
-    }
+    startActivity(optionsSelector.select(item));
+    return true;
   }
 
   public void onUserAddsNewHabit(String newHabit) {
