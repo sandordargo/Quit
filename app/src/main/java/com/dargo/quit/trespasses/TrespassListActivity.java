@@ -30,7 +30,12 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
     this.defaultHabitManager = new DefaultHabitManager(this, this, R.id.defaultHabitToolbar);
     this.defaultHabitManager.setDefaultHabit();
     this.trespassListHandler = new TrespassListHandler(R.id.listview, this, this, this);
+    setupAddHabitButton();
+    setupNewTrespassButton();
+    populateListView();
+  }
 
+  private void setupAddHabitButton() {
     FloatingActionButton addNewHabitButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
     addNewHabitButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -39,7 +44,9 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
         fragment.show(getFragmentManager(), "AddHabitDialogFragment");
       }
     });
+  }
 
+  private void setupNewTrespassButton() {
     FloatingActionButton addNewTrespassButton = (FloatingActionButton) findViewById(R.id.addTrespassButton);
     addNewTrespassButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -48,7 +55,6 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
         populateListView();
       }
     });
-    populateListView();
   }
 
   public void populateListView() {

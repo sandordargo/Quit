@@ -38,49 +38,28 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_overview);
-    defaultHabitManager = new DefaultHabitManager(this, this, R.id.defaultHabitOverviewToolbar);
-    defaultHabitManager.setDefaultHabit();
+    this.defaultHabitManager = new DefaultHabitManager(this, this, R.id.defaultHabitOverviewToolbar);
+    this.defaultHabitManager.setDefaultHabit();
     this.trespassListHandler = new TrespassListHandler(R.id.overview_listview, this, this, this);
     this.optionsSelector = new OptionsItemSelector(this);
-    Toolbar toolbar = (Toolbar) findViewById(R.id.overview_toolbar);
-    setSupportActionBar(toolbar);
-
-    FloatingActionButton addNewHabitButton = (FloatingActionButton) findViewById(R.id.floatingActionButtonOverviewActivity);
-    addNewHabitButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        AddHabitDialogFragment fragment = AddHabitDialogFragment.make("OVERVIEW");
-        fragment.show(getFragmentManager(), "AddHabitDialogFragment");
-      }
-    });
-
-    FloatingActionButton addNewTrespassButton = (FloatingActionButton) findViewById(R.id.addTrespassButtonOverviewActivity);
-    addNewTrespassButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
-        new ConstSQLiteTrespasses(getBaseContext()).add(getDefaultabit());
-        populateListView();
-      }
-    });
+    setSupportActionBar((Toolbar) findViewById(R.id.overview_toolbar));
+    setupAddHabitButton();
+    setupNewTrespassButton();
     populateListView();
+    setupGraphView();
+  }
 
-    List<TrespassCounter> values = new ArrayList<>();
+  private void setupGraphView() {
+    List<DataPoint> dataPoints = new ArrayList<>();
     for (TrespassCounter trespass :
             new ConstSQLiteTrespassCounters(getBaseContext()).trespassesPerDayFor(getDefaultabit())) {
-      values.add(trespass);
+      dataPoints.add(new DataPoint(trespass.getDateOfDay().getTime(), trespass.getTrespassesPerDay()));
     }
+    DataPoint[] dataPointsArray = new DataPoint[dataPoints.size()];
+    dataPointsArray = dataPoints.toArray(dataPointsArray);
+    BarGraphSeries<DataPoint> series1 = new BarGraphSeries<>(dataPointsArray);
 
     GraphView graph = (GraphView) findViewById(R.id.trespassesGraph);
-
-    int size = values.size();
-    DataPoint[] dataPoints = new DataPoint[size];
-    for (int i = 0 ; i<size; i++) {
-      DataPoint v = new DataPoint(values.get(i).getDateOfDay().getTime(), values.get(i).getTrespassesPerDay());
-      dataPoints[i] = v;
-    }
-    BarGraphSeries<DataPoint> series1 = new BarGraphSeries<>(dataPoints);
-
-
     graph.addSeries(series1);
     series1.setValueDependentColor(new ValueDependentColor<DataPoint>() {
       @Override
@@ -94,7 +73,7 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
     series1.setDrawValuesOnTop(true);
     //graph.getViewport().setMaxY(series1.getHighestValueY()+5);
     //graph.getViewport().setYAxisBoundsManual(true);
-    
+
     graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getBaseContext()));
 
     Date first = new Date((long) series1.getHighestValueX());
@@ -105,6 +84,28 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
     graph.getViewport().setXAxisBoundsManual(true);
 
     graph.getGridLabelRenderer().setHumanRounding(false);
+  }
+
+  private void setupNewTrespassButton() {
+    FloatingActionButton addNewTrespassButton = (FloatingActionButton) findViewById(R.id.addTrespassButtonOverviewActivity);
+    addNewTrespassButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        new ConstSQLiteTrespasses(getBaseContext()).add(getDefaultabit());
+        populateListView();
+      }
+    });
+  }
+
+  private void setupAddHabitButton() {
+    FloatingActionButton addNewHabitButton = (FloatingActionButton) findViewById(R.id.floatingActionButtonOverviewActivity);
+    addNewHabitButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        AddHabitDialogFragment fragment = AddHabitDialogFragment.make("OVERVIEW");
+        fragment.show(getFragmentManager(), "AddHabitDialogFragment");
+      }
+    });
   }
 
   public void populateListView() {
