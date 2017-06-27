@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ActivityOverview extends AppCompatActivity implements ListAdapterCallback, TrespassAdderCallback {
+public class ActivityOverview extends AppCompatActivity implements ListAdapterCallback {
 
   ListView listView;
   TrespassListAdapter trespassListAdapter;
@@ -205,13 +205,11 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
     }
   }
 
-  @Override
   public void callTimePicker(long id, Date date) {
     EditTrespassTimeDialogFragment fragment = EditTrespassTimeDialogFragment.make(id, date, "OVERVIEW");
     fragment.show(getFragmentManager(), "Edit trespass date");
   }
 
-  @Override
   public void updateTrespassDate(long trespassId, Date newDate) {
     Trespass trespass = new SQLiteTrespass(
             new QuitSqliteDBHelper(getBaseContext()).getWritableDatabase(), trespassId);
