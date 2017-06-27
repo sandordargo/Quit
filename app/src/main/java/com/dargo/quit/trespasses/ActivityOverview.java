@@ -9,20 +9,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dargo.quit.utils.ListAdapterCallback;
-import com.dargo.quit.utils.QuitSqliteDBHelper;
 import com.dargo.quit.R;
-import com.dargo.quit.trespass_counters.TrespassesByDayListActivity;
 import com.dargo.quit.habits.AddHabitDialogFragment;
 import com.dargo.quit.habits.ConstSQLiteHabits;
 import com.dargo.quit.habits.Habit;
 import com.dargo.quit.habits.HabitsManagementActivity;
 import com.dargo.quit.trespass_counters.ConstSQLiteTrespassCounters;
 import com.dargo.quit.trespass_counters.TrespassCounter;
+import com.dargo.quit.trespass_counters.TrespassesByDayListActivity;
+import com.dargo.quit.utils.ListAdapterCallback;
+import com.dargo.quit.utils.QuitSqliteDBHelper;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
@@ -35,15 +34,15 @@ import java.util.List;
 
 public class ActivityOverview extends AppCompatActivity implements ListAdapterCallback {
 
-  ListView listView;
-  TrespassListAdapter trespassListAdapter;
   Habit defaultHabit;
   boolean habitIsBeingRead;
+  private TrespassListHandler trespassListHandler;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_overview);
+    trespassListHandler = new TrespassListHandler(R.id.overview_listview, this, this, this);
     habitIsBeingRead = false;
     setDefaultHabit();
     Toolbar toolbar = (Toolbar) findViewById(R.id.overview_toolbar);
@@ -140,22 +139,13 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
   }
 
   public void populateListView() {
-    listView = (ListView) findViewById(R.id.overview_listview);
-    List<Trespass> values = new ArrayList<>();
-    for (Trespass trespass : new ConstSQLiteTrespasses(getBaseContext()).iterate(defaultHabit)) {
-      values.add(trespass);
-    }
-    trespassListAdapter = new TrespassListAdapter(this, values, this);
-    listView.setAdapter(trespassListAdapter);
+    trespassListHandler.populateListView(defaultHabit);
   }
 
   public void cleanListView() {
-    listView = (ListView) findViewById(R.id.overview_listview);
-    List<Trespass> emptyList = new ArrayList<>();
-    trespassListAdapter = new TrespassListAdapter(this, emptyList, this);
-    listView.setAdapter(trespassListAdapter);
+    trespassListHandler.cleanListView();
   }
-
+  
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.

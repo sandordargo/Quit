@@ -7,29 +7,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.dargo.quit.habits.AddHabitDialogFragment;
-import com.dargo.quit.utils.ListAdapterCallback;
-import com.dargo.quit.utils.QuitSqliteDBHelper;
 import com.dargo.quit.R;
-import com.dargo.quit.trespass_counters.TrespassesByDayListActivity;
+import com.dargo.quit.habits.AddHabitDialogFragment;
 import com.dargo.quit.habits.ConstSQLiteHabits;
 import com.dargo.quit.habits.Habit;
 import com.dargo.quit.habits.HabitsManagementActivity;
+import com.dargo.quit.trespass_counters.TrespassesByDayListActivity;
+import com.dargo.quit.utils.ListAdapterCallback;
+import com.dargo.quit.utils.QuitSqliteDBHelper;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class TrespassListActivity extends AppCompatActivity implements ListAdapterCallback {
 
-  ListView listView;
-  TrespassListAdapter trespassListAdapter;
   Habit defaultHabit;
   boolean habitIsBeingRead;
+  TrespassListHandler trespassListHandler;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +33,7 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
     setContentView(R.layout.activity_main);
     habitIsBeingRead = false;
     setDefaultHabit();
+    trespassListHandler = new TrespassListHandler(R.id.listview, this, this, this);
 
     FloatingActionButton addNewHabitButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
     addNewHabitButton.setOnClickListener(new View.OnClickListener() {
@@ -87,20 +84,11 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   }
 
   public void populateListView() {
-    listView = (ListView) findViewById(R.id.listview);
-    List<Trespass> values = new ArrayList<>();
-    for (Trespass trespass : new ConstSQLiteTrespasses(getBaseContext()).iterate(defaultHabit)) {
-      values.add(trespass);
-    }
-    trespassListAdapter = new TrespassListAdapter(this, values, this);
-    listView.setAdapter(trespassListAdapter);
+    trespassListHandler.populateListView(defaultHabit);
   }
 
   public void cleanListView() {
-    listView = (ListView) findViewById(R.id.listview);
-    List<Trespass> emptyList = new ArrayList<>();
-    trespassListAdapter = new TrespassListAdapter(this, emptyList, this);
-    listView.setAdapter(trespassListAdapter);
+    trespassListHandler.cleanListView();
   }
 
   @Override
