@@ -21,7 +21,6 @@ import com.jjoe64.graphview.series.DataPoint;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 public class ActivityOverview extends AppCompatActivity implements ListAdapterCallback, TrespassAdderCallback {
@@ -87,16 +86,18 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
 
     series1.setSpacing(50);
     series1.setDrawValuesOnTop(true);
-    graph.getViewport().setMaxY(series1.getHighestValueY()+1);
+    //graph.getViewport().setMaxY(series1.getHighestValueY()+5);
+    //graph.getViewport().setYAxisBoundsManual(true);
+    
     graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getBaseContext()));
 
     Date first = new Date((long) series1.getHighestValueX());
     Date last = new Date((long) series1.getLowestValueX());
     Toast.makeText(getBaseContext(), String.valueOf(first), Toast.LENGTH_LONG).show();
-    graph.getViewport().setMinX(first.getTime());
-    graph.getViewport().setMaxX(last.getTime());
+    graph.getViewport().setMinX(first.getTime() - 24*60*60*1000);
+    graph.getViewport().setMaxX(last.getTime() + 24*60*60*1000);
     graph.getViewport().setXAxisBoundsManual(true);
-    graph.getViewport().setYAxisBoundsManual(true);
+
     graph.getGridLabelRenderer().setHumanRounding(false);
   }
 
