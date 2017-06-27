@@ -6,12 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dargo.quit.R;
 import com.dargo.quit.habits.AddHabitDialogFragment;
-import com.dargo.quit.habits.ConstSQLiteHabits;
 import com.dargo.quit.habits.Habit;
 import com.dargo.quit.utils.ListAdapterCallback;
 import com.dargo.quit.utils.OptionsItemSelector;
@@ -21,18 +18,17 @@ import java.util.Date;
 
 public class TrespassListActivity extends AppCompatActivity implements ListAdapterCallback {
 
-  Habit defaultHabit;
-  boolean habitIsBeingRead;
   TrespassListHandler trespassListHandler;
   private OptionsItemSelector optionsSelector;
+  DefaultHabitManager defaultHabitManager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     this.optionsSelector = new OptionsItemSelector(this);
-    this.habitIsBeingRead = false;
-    setDefaultHabit();
+    this.defaultHabitManager = new DefaultHabitManager(this, this, R.id.defaultHabitToolbar);
+    this.defaultHabitManager.setDefaultHabit();
     this.trespassListHandler = new TrespassListHandler(R.id.listview, this, this, this);
 
     FloatingActionButton addNewHabitButton = (FloatingActionButton) findViewById(R.id.floatingActionButton);
@@ -48,43 +44,15 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
     addNewTrespassButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        new ConstSQLiteTrespasses(getBaseContext()).add(defaultHabit);
+        new ConstSQLiteTrespasses(getBaseContext()).add(getDefaultHabit());
         populateListView();
       }
     });
     populateListView();
   }
 
-  private void setDefaultHabit() {
-    boolean isThereADefaultHabit = false;
-    defaultHabit = new ConstSQLiteHabits(getBaseContext()).getDefaultHabit();
-    if (defaultHabit == null && !habitIsBeingRead) {
-      habitIsBeingRead = true;
-      new AddHabitDialogFragment().show(getFragmentManager(), "AddHabitDialogFragment");
-      makeFirstHabitDefault();
-      return;
-    } else {
-      isThereADefaultHabit = true;
-    }
-
-    if (!isThereADefaultHabit) {
-      makeFirstHabitDefault();
-    }
-    updateTitle();
-  }
-
-  private void makeFirstHabitDefault() {
-    Iterable<Habit> habits = new ConstSQLiteHabits(getBaseContext()).iterate();
-    if (habits.iterator().hasNext()) {
-      Habit habit = habits.iterator().next();
-      habit.makeDefault();
-      this.defaultHabit = habit;
-      return;
-    }
-  }
-
   public void populateListView() {
-    trespassListHandler.populateListView(defaultHabit);
+    trespassListHandler.populateListView(getDefaultHabit());
   }
 
   public void cleanListView() {
@@ -105,28 +73,16 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
   }
 
   public void onUserAddsNewHabit(String newHabit) {
-    Habit habit = new ConstSQLiteHabits(getBaseContext()).add(newHabit);
-    Toast.makeText(getBaseContext(), "Added new habit: " + habit.getName() + ".", Toast.LENGTH_LONG).show();
-    habitIsBeingRead = false;
-    if (defaultHabit == null) {
-      this.defaultHabit = habit;
-      updateTitle();
-    }
+      this.defaultHabitManager.onUserAddsNewHabit(newHabit);
+
   }
 
   @Override
   protected void onResume() {
     super.onResume();
-    setDefaultHabit();
+    defaultHabitManager.setDefaultHabit();
     cleanListView();
     populateListView();
-  }
-
-  private void updateTitle() {
-    if (defaultHabit != null) {
-      TextView toolbarText = (TextView) findViewById(R.id.defaultHabitToolbar);
-      toolbarText.setText(defaultHabit.getName());
-    }
   }
 
   public void callTimePicker(long id, Date date) {
@@ -139,5 +95,9 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
             new QuitSqliteDBHelper(getBaseContext()).getWritableDatabase(), trespassId);
     trespass.updateDate(newDate);
     populateListView();
+  }
+
+  private Habit getDefaultHabit() {
+    return  this.defaultHabitManager.getDefaultHabit();
   }
 }
