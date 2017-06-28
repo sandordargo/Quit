@@ -1,6 +1,7 @@
 package com.dargo.quit.trespass_counters;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.widget.ListView;
 import com.dargo.quit.R;
 import com.dargo.quit.habits.ConstSQLiteHabits;
 import com.dargo.quit.habits.Habit;
+import com.dargo.quit.utils.HomeButtonHider;
 import com.dargo.quit.utils.OptionsItemSelector;
 
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class TrespassesByDayListActivity extends AppCompatActivity {
     setContentView(R.layout.activity_trespasses_by_day_list);
     this.defaultHabit = new ConstSQLiteHabits(getBaseContext()).getDefaultHabit();
     this.optionsSelector = new OptionsItemSelector(this);
-    populateListView();
+    HomeButtonHider.hide(getSupportActionBar());
   }
 
   public void populateListView() {

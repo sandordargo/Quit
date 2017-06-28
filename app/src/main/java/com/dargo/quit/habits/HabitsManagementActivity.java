@@ -1,15 +1,17 @@
 package com.dargo.quit.habits;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import com.dargo.quit.R;
+import com.dargo.quit.utils.HomeButtonHider;
 import com.dargo.quit.utils.ListAdapterCallback;
 import com.dargo.quit.utils.OptionsItemSelector;
 import com.dargo.quit.utils.QuitSqliteDBHelper;
-import com.dargo.quit.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,7 @@ public class HabitsManagementActivity extends AppCompatActivity implements ListA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habits_management);
         this.optionsSelector = new OptionsItemSelector(this);
+        HomeButtonHider.hide(getSupportActionBar());
         populateListView();
     }
 

@@ -3,6 +3,7 @@ package com.dargo.quit.trespasses;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import com.dargo.quit.habits.AddHabitDialogFragment;
 import com.dargo.quit.habits.Habit;
 import com.dargo.quit.trespass_counters.ConstSQLiteTrespassCounters;
 import com.dargo.quit.trespass_counters.TrespassCounter;
+import com.dargo.quit.utils.HomeButtonHider;
 import com.dargo.quit.utils.ListAdapterCallback;
 import com.dargo.quit.utils.OptionsItemSelector;
 import com.dargo.quit.utils.QuitSqliteDBHelper;
@@ -45,6 +47,7 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
     setSupportActionBar((Toolbar) findViewById(R.id.overview_toolbar));
     setupAddHabitButton();
     setupNewTrespassButton();
+    HomeButtonHider.hide(getSupportActionBar());
     populateListView();
     setupGraphView();
   }

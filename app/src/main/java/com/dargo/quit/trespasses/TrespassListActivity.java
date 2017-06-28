@@ -2,6 +2,7 @@ package com.dargo.quit.trespasses;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,6 +11,7 @@ import android.view.View;
 import com.dargo.quit.R;
 import com.dargo.quit.habits.AddHabitDialogFragment;
 import com.dargo.quit.habits.Habit;
+import com.dargo.quit.utils.HomeButtonHider;
 import com.dargo.quit.utils.ListAdapterCallback;
 import com.dargo.quit.utils.OptionsItemSelector;
 import com.dargo.quit.utils.QuitSqliteDBHelper;
@@ -32,6 +34,7 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
     this.trespassListHandler = new TrespassListHandler(R.id.listview, this, this, this);
     setupAddHabitButton();
     setupNewTrespassButton();
+    HomeButtonHider.hide(getSupportActionBar());
     populateListView();
   }
 
