@@ -59,13 +59,21 @@ public class HabitsListAdapter extends ArrayAdapter {
         });
     }
 
-    private void setUpDeleteButton(final int position, View rowView) {
+    private void setUpDeleteButton(final int position, final View rowView) {
         Button deleteButton = (Button) rowView.findViewById(R.id.deleteHabitButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new ConstSQLiteHabits(context).delete(habits.get(position));
+                makeFirstHabitDefaultIfDefaultIsDeleted();
                 callback.populateListView();
+            }
+
+            private void makeFirstHabitDefaultIfDefaultIsDeleted() {
+                if (position == selectedIndex) {
+                    selectedIndex = 0;
+                    habits.get(selectedIndex).makeDefault();
+                }
             }
         });
     }
