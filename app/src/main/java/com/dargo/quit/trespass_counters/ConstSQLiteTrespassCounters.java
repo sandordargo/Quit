@@ -31,7 +31,7 @@ public class ConstSQLiteTrespassCounters implements TrespassCounters {
         String[] selectionArgs = {String.valueOf(habit.getId())};
         List<TrespassCounter> trespassCounters = new ArrayList<>();
         Cursor cursor = db.query("TRESPASSES", projection, selection,
-                selectionArgs, "COMMIT_DAY", null, "COMMIT_DAY DESC");
+                selectionArgs, "COMMIT_DAY", null, "COMMIT_DAY DESC", "7");
         while(cursor.moveToNext()) {
             Date date = new Date(cursor.getLong(cursor.getColumnIndex("COMMIT_DATE")));
             trespassCounters.add(new TrespassCounter(date,
