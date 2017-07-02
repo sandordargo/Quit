@@ -2,5 +2,5 @@ package com.dargo.quit.utils;
 
 
 public interface ListAdapterCallback {
-    void populateListView();
+    void refreshDisplay();
 }

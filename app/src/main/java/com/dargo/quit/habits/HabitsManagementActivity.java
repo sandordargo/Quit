@@ -1,7 +1,6 @@
 package com.dargo.quit.habits;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,11 +27,11 @@ public class HabitsManagementActivity extends AppCompatActivity implements ListA
         setContentView(R.layout.activity_habits_management);
         this.optionsSelector = new OptionsItemSelector(this);
         HomeButtonHider.hide(getSupportActionBar());
-        populateListView();
+        refreshDisplay();
     }
 
     @Override
-    public void populateListView() {
+    public void refreshDisplay() {
         listView = (ListView) findViewById(R.id.habits_listview);
         List<Habit> values = new ArrayList<>();
         for (Habit habit : new ConstSQLiteHabits(getBaseContext()).iterate()) {
@@ -59,6 +58,6 @@ public class HabitsManagementActivity extends AppCompatActivity implements ListA
         Habit habit = new SQLiteHabit(
                 new QuitSqliteDBHelper(getBaseContext()).getWritableDatabase(), habitId);
         habit.updateName(habitName);
-        populateListView();
+        refreshDisplay();
     }
 }

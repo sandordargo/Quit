@@ -2,7 +2,6 @@ package com.dargo.quit.trespasses;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,7 +34,7 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
     setupAddHabitButton();
     setupNewTrespassButton();
     HomeButtonHider.hide(getSupportActionBar());
-    populateListView();
+    refreshDisplay();
   }
 
   private void setupAddHabitButton() {
@@ -55,12 +54,12 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
       @Override
       public void onClick(View view) {
         new ConstSQLiteTrespasses(getBaseContext()).add(getDefaultHabit());
-        populateListView();
+        refreshDisplay();
       }
     });
   }
 
-  public void populateListView() {
+  public void refreshDisplay() {
     trespassListHandler.populateListView(getDefaultHabit());
   }
 
@@ -91,7 +90,7 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
     super.onResume();
     defaultHabitManager.setDefaultHabit();
     cleanListView();
-    populateListView();
+    refreshDisplay();
   }
 
   public void callTimePicker(long id, Date date) {
@@ -103,7 +102,7 @@ public class TrespassListActivity extends AppCompatActivity implements ListAdapt
     Trespass trespass = new SQLiteTrespass(
             new QuitSqliteDBHelper(getBaseContext()).getWritableDatabase(), trespassId);
     trespass.updateDate(newDate);
-    populateListView();
+    refreshDisplay();
   }
 
   private Habit getDefaultHabit() {

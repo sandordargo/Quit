@@ -66,7 +66,7 @@ public class HabitsListAdapter extends ArrayAdapter {
             public void onClick(View v) {
                 new ConstSQLiteHabits(context).delete(habits.get(position));
                 makeFirstHabitDefaultIfDefaultIsDeleted();
-                callback.populateListView();
+                callback.refreshDisplay();
             }
 
             private void makeFirstHabitDefaultIfDefaultIsDeleted() {

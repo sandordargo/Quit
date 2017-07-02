@@ -3,7 +3,6 @@ package com.dargo.quit.trespasses;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -35,6 +34,7 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
   private TrespassListHandler trespassListHandler;
   private OptionsItemSelector optionsSelector;
   private DefaultHabitManager defaultHabitManager;
+  private GraphView graph;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +44,12 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
     this.defaultHabitManager.setDefaultHabit();
     this.trespassListHandler = new TrespassListHandler(R.id.overview_listview, this, this, this);
     this.optionsSelector = new OptionsItemSelector(this);
+    this.graph = (GraphView) findViewById(R.id.trespassesGraph);
     setSupportActionBar((Toolbar) findViewById(R.id.overview_toolbar));
     setupAddHabitButton();
     setupNewTrespassButton();
     HomeButtonHider.hide(getSupportActionBar());
-    populateListView();
-    setupGraphView();
+    refreshDisplay();
   }
 
   private void setupGraphView() {
@@ -62,7 +62,7 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
     dataPointsArray = dataPoints.toArray(dataPointsArray);
     BarGraphSeries<DataPoint> series1 = new BarGraphSeries<>(dataPointsArray);
 
-    GraphView graph = (GraphView) findViewById(R.id.trespassesGraph);
+    graph.removeAllSeries();
     graph.addSeries(series1);
     series1.setValueDependentColor(new ValueDependentColor<DataPoint>() {
       @Override
@@ -74,8 +74,21 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
 
     series1.setSpacing(50);
     series1.setDrawValuesOnTop(true);
-    //graph.getViewport().setMaxY(series1.getHighestValueY()+5);
-    //graph.getViewport().setYAxisBoundsManual(true);
+
+    int maxYValue = (int) series1.getHighestValueY()+1;
+    int maxLabel = maxYValue;
+    int interval = 1;
+
+    while (interval * 10 < maxYValue) {
+      interval++;
+      maxLabel = interval * 10;
+    }
+
+    graph.getGridLabelRenderer().setNumVerticalLabels(11);
+
+    graph.getViewport().setMinY(0.0);
+    graph.getViewport().setMaxY(maxLabel);
+    graph.getViewport().setYAxisBoundsManual(true);
 
     graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(getBaseContext()));
 
@@ -95,7 +108,8 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
       @Override
       public void onClick(View view) {
         new ConstSQLiteTrespasses(getBaseContext()).add(getDefaultabit());
-        populateListView();
+        refreshDisplay();
+        setupGraphView();
       }
     });
   }
@@ -111,8 +125,9 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
     });
   }
 
-  public void populateListView() {
+  public void refreshDisplay() {
     trespassListHandler.populateListView(getDefaultabit());
+    setupGraphView();
   }
 
   public void cleanListView() {
@@ -141,7 +156,8 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
     super.onResume();
     defaultHabitManager.setDefaultHabit();
     cleanListView();
-    populateListView();
+    refreshDisplay();
+    setupGraphView();
   }
 
   public void callTimePicker(long id, Date date) {
@@ -153,7 +169,8 @@ public class ActivityOverview extends AppCompatActivity implements ListAdapterCa
     Trespass trespass = new SQLiteTrespass(
             new QuitSqliteDBHelper(getBaseContext()).getWritableDatabase(), trespassId);
     trespass.updateDate(newDate);
-    populateListView();
+    refreshDisplay();
+    setupGraphView();
   }
 
   public Habit getDefaultabit() {

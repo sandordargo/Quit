@@ -59,7 +59,7 @@ public class TrespassListAdapter extends ArrayAdapter {
             @Override
             public void onClick(View v) {
                 new ConstSQLiteTrespasses(context).delete(trespasses.get(position));
-                callback.populateListView();
+                callback.refreshDisplay();
             }
         });
     }
